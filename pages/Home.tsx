@@ -83,11 +83,13 @@ const Home: React.FC = () => {
           <div className="max-w-5xl mx-auto text-center">
             {/* Main Headline - EXACT from spec */}
             <h1
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight mb-6 animate-fade-in-up"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-6 animate-fade-in-up"
               style={{ animationDelay: '300ms' }}
             >
-              Manufactured & Modular Homes
-              <span className="block mt-2">in Southeast Louisiana</span>
+              <span className="bg-gradient-to-r from-primary via-emerald-500 to-emerald-600 bg-clip-text text-transparent">
+                Manufactured & Modular Homes
+              </span>
+              <span className="block mt-2 text-white">in Southeast Louisiana</span>
             </h1>
 
             {/* Subheadline - EXACT from spec */}
