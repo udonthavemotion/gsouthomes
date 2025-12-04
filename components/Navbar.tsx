@@ -1,21 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, ChevronRight } from 'lucide-react';
 import { COMPANY_INFO } from '../constants';
 import Button from './Button';
+import { useScrollLock } from '../hooks/useScrollLock';
+import { useFocusTrap } from '../hooks/useFocusTrap';
+import { useClickOutside } from '../hooks/useClickOutside';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navbarHeight, setNavbarHeight] = useState(80);
   const location = useLocation();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // Lock body scroll when mobile menu is open
+  useScrollLock(isOpen);
+
+  // Trap focus within mobile menu when open
+  useFocusTrap(isOpen, menuRef);
+
+  // Close menu when clicking outside
+  useClickOutside(menuRef, () => setIsOpen(false), isOpen);
+
+  // Close menu on Escape key
+  useEscapeKey(() => setIsOpen(false), isOpen);
 
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Calculate navbar height dynamically
+  useEffect(() => {
+    if (navRef.current) {
+      setNavbarHeight(navRef.current.offsetHeight);
+    }
   }, []);
 
   // Close mobile menu on route change
@@ -23,11 +50,28 @@ const Navbar: React.FC = () => {
     setIsOpen(false);
   }, [location.pathname]);
 
+  // Return focus to menu button when menu closes
+  useEffect(() => {
+    if (!isOpen && menuButtonRef.current) {
+      menuButtonRef.current.focus();
+    }
+  }, [isOpen]);
+
+  const toggleMenu = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Our Homes', path: '/catalog' },
     { name: 'Single-Wide', path: '/single-wide' },
+    { name: 'Double-Wide', path: '/double-wide' },
     { name: 'Land & Home', path: '/land-home' },
+    { name: 'Parts', path: '/parts' },
     { name: 'Services', path: '/services' },
     { name: 'About', path: '/about' },
   ];
@@ -35,11 +79,11 @@ const Navbar: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header 
+    <header
       className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-white/95 backdrop-blur-xl shadow-lg shadow-stone-900/5' 
-          : 'bg-white/80 backdrop-blur-md'
+        scrolled
+          ? 'bg-white shadow-lg'
+          : 'bg-white shadow-md'
       }`}
     >
       {/* Top Bar - Desktop Only */}
@@ -47,7 +91,7 @@ const Navbar: React.FC = () => {
         <div className="container mx-auto px-6 xl:px-8">
           <div className="flex justify-between items-center py-2.5 text-xs font-medium tracking-wide">
             <span className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+              <span className="w-1.5 h-1.5 bg-primary animate-pulse"></span>
               {COMPANY_INFO.address}
             </span>
             <div className="flex items-center space-x-6">
@@ -64,10 +108,10 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <nav ref={navRef} className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 lg:h-24 items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group" onClick={closeMenu}>
             <div className="relative">
               <img 
                 src="/assets/images/logo/logo.png" 
@@ -99,7 +143,7 @@ const Navbar: React.FC = () => {
               >
                 {link.name}
                 {isActive(link.path) && (
-                  <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full"></span>
+                  <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary"></span>
                 )}
               </Link>
             ))}
@@ -123,75 +167,109 @@ const Navbar: React.FC = () => {
           {/* Mobile Menu Button */}
           <div className="flex items-center lg:hidden">
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={`p-2.5 rounded-xl transition-all duration-300 ${
-                isOpen 
-                  ? 'bg-stone-900 text-white' 
+              ref={menuButtonRef}
+              onClick={toggleMenu}
+              className={`p-2.5 rounded-md transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${
+                isOpen
+                  ? 'bg-stone-900 text-white'
                   : 'text-stone-600 hover:bg-stone-100'
               }`}
-              aria-label="Toggle menu"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
             </button>
           </div>
         </div>
       </nav>
 
+      {/* Mobile Menu Backdrop */}
+      <div 
+        className={`lg:hidden fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 ${
+          isOpen 
+            ? 'opacity-100' 
+            : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={closeMenu}
+        aria-hidden="true"
+      />
+
       {/* Mobile Menu */}
       <div 
-        className={`lg:hidden fixed inset-x-0 top-[80px] bg-white/98 backdrop-blur-xl shadow-2xl transition-all duration-500 ease-out ${
+        ref={menuRef}
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="mobile-menu-title"
+        className={`lg:hidden fixed inset-x-0 bg-white shadow-2xl transition-all duration-500 ease-out z-50 overflow-y-auto ${
           isOpen 
             ? 'opacity-100 translate-y-0' 
             : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
-        style={{ maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}
+        style={{ 
+          top: `${navbarHeight}px`,
+          bottom: 0,
+          height: `calc(100vh - ${navbarHeight}px)`,
+          minHeight: `calc(100vh - ${navbarHeight}px)`,
+          maxHeight: `calc(100vh - ${navbarHeight}px)`,
+          paddingBottom: 'max(env(safe-area-inset-bottom), 0px)'
+        }}
       >
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-6 flex flex-col min-h-full">
+          <h2 id="mobile-menu-title" className="sr-only">Navigation Menu</h2>
           <div className="space-y-1">
             {navLinks.map((link, idx) => (
               <Link
                 key={link.path}
                 to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 ${
+                onClick={closeMenu}
+                className={`mobile-menu-item flex items-center justify-between px-4 py-3.5 rounded-lg text-base font-semibold transition-all duration-300 min-h-[44px] ${
                   isActive(link.path)
                     ? 'text-primary bg-primary/10'
-                    : 'text-stone-700 hover:bg-stone-100'
-                }`}
+                    : 'text-stone-700 hover:bg-stone-100 active:bg-stone-200'
+                } ${isOpen ? 'animate-fade-in-up' : ''}`}
                 style={{ 
-                  animationDelay: `${idx * 50}ms`,
-                  animation: isOpen ? 'fadeInUp 0.4s ease-out forwards' : 'none'
+                  animationDelay: `${idx * 50}ms`
                 }}
               >
                 {link.name}
-                <ChevronRight size={18} className={isActive(link.path) ? 'text-primary' : 'text-stone-400'} />
+                <ChevronRight size={18} className={isActive(link.path) ? 'text-primary' : 'text-stone-400'} aria-hidden="true" />
               </Link>
             ))}
             
             <Link
               to="/contact"
-              onClick={() => setIsOpen(false)}
-              className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 ${
+              onClick={closeMenu}
+              className={`mobile-menu-item flex items-center justify-between px-4 py-3.5 rounded-lg text-base font-semibold transition-all duration-300 min-h-[44px] ${
                 isActive('/contact')
                   ? 'text-primary bg-primary/10'
-                  : 'text-stone-700 hover:bg-stone-100'
-              }`}
+                  : 'text-stone-700 hover:bg-stone-100 active:bg-stone-200'
+              } ${isOpen ? 'animate-fade-in-up' : ''}`}
+              style={{ 
+                animationDelay: `${navLinks.length * 50}ms`
+              }}
             >
               Contact Us
-              <ChevronRight size={18} className={isActive('/contact') ? 'text-primary' : 'text-stone-400'} />
+              <ChevronRight size={18} className={isActive('/contact') ? 'text-primary' : 'text-stone-400'} aria-hidden="true" />
             </Link>
           </div>
 
-          <div className="mt-6 pt-6 border-t border-stone-200 space-y-4">
-            <Button to="/catalog" fullWidth onClick={() => setIsOpen(false)} className="py-4 text-base">
+          <div className="mt-auto pt-6 border-t border-stone-200 space-y-4">
+            <Button 
+              to="/catalog" 
+              fullWidth 
+              onClick={closeMenu} 
+              className="py-4 text-base min-h-[44px]"
+            >
               Browse All Homes
             </Button>
             
             <a
               href={`tel:${COMPANY_INFO.phone}`}
-              className="flex items-center justify-center gap-3 py-4 bg-stone-100 rounded-xl text-stone-900 font-semibold hover:bg-stone-200 transition-colors"
+              className="flex items-center justify-center gap-3 py-4 bg-stone-100 rounded-lg text-stone-900 font-semibold hover:bg-stone-200 active:bg-stone-300 transition-colors min-h-[44px]"
             >
-              <Phone size={20} className="text-primary" />
+              <Phone size={20} className="text-primary" aria-hidden="true" />
               {COMPANY_INFO.phone}
             </a>
           </div>

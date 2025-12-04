@@ -72,6 +72,7 @@ const SingleWide: React.FC = () => {
             muted 
             loop 
             playsInline
+            preload="metadata"
             className="w-full h-full object-cover opacity-60"
           >
             <source src="/assets/video/single-wide-hero.mp4" type="video/mp4" />
@@ -104,6 +105,7 @@ const SingleWide: React.FC = () => {
               <button 
                 onClick={clearFilters}
                 className="text-sm text-stone-500 hover:text-stone-700 underline"
+                aria-label="Clear all active filters"
               >
                 Clear filters
               </button>
@@ -111,11 +113,12 @@ const SingleWide: React.FC = () => {
             <button 
               className="flex items-center gap-2 px-4 py-2.5 bg-white border border-stone-300 rounded-lg text-stone-700 hover:bg-stone-50 hover:border-stone-400 transition-colors shadow-sm"
               onClick={() => setShowFilters(true)}
+              aria-label={`Open filters${activeFiltersCount > 0 ? ` (${activeFiltersCount} active)` : ''}`}
             >
-              <SlidersHorizontal size={18} />
+              <SlidersHorizontal size={18} aria-hidden="true" />
               <span>Filters</span>
               {activeFiltersCount > 0 && (
-                <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full" aria-label={`${activeFiltersCount} active filter${activeFiltersCount !== 1 ? 's' : ''}`}>
                   {activeFiltersCount}
                 </span>
               )}
@@ -232,6 +235,7 @@ const SingleWide: React.FC = () => {
             <button 
               onClick={() => setShowFilters(false)}
               className="p-2 hover:bg-stone-100 rounded-lg transition-colors"
+              aria-label="Close filters"
             >
               <X size={22} />
             </button>
@@ -242,7 +246,7 @@ const SingleWide: React.FC = () => {
             {/* Bedrooms Filter */}
             <div className="mb-8">
               <h3 className="font-semibold text-stone-900 mb-4 text-lg">Bedrooms</h3>
-              <div className="space-y-3">
+              <div className="space-y-3" role="radiogroup" aria-label="Filter by number of bedrooms">
                 {bedOptions.map(beds => (
                   <label key={beds} className="flex items-center gap-3 cursor-pointer group">
                     <input 
@@ -251,6 +255,7 @@ const SingleWide: React.FC = () => {
                       checked={selectedBeds === String(beds)}
                       onChange={() => setSelectedBeds(String(beds))}
                       className="text-primary focus:ring-primary h-5 w-5 border-stone-300"
+                      aria-label={`Filter by ${beds === 'All' ? 'any number of' : beds} bedroom${beds !== '1' && beds !== 'All' ? 's' : ''}`}
                     />
                     <span className={`${selectedBeds === String(beds) ? 'text-primary font-medium' : 'text-stone-600 group-hover:text-stone-900'}`}>
                       {beds === 'All' ? 'Any' : `${beds} Bed${beds !== '1' ? 's' : ''}`}
@@ -263,7 +268,7 @@ const SingleWide: React.FC = () => {
             {/* Bathrooms Filter */}
             <div className="mb-8">
               <h3 className="font-semibold text-stone-900 mb-4 text-lg">Bathrooms</h3>
-              <div className="space-y-3">
+              <div className="space-y-3" role="radiogroup" aria-label="Filter by number of bathrooms">
                 {bathOptions.map(baths => (
                   <label key={baths} className="flex items-center gap-3 cursor-pointer group">
                     <input 
@@ -272,6 +277,7 @@ const SingleWide: React.FC = () => {
                       checked={selectedBaths === String(baths)}
                       onChange={() => setSelectedBaths(String(baths))}
                       className="text-primary focus:ring-primary h-5 w-5 border-stone-300"
+                      aria-label={`Filter by ${baths === 'All' ? 'any number of' : baths} bathroom${baths !== '1' && baths !== 'All' ? 's' : ''}`}
                     />
                     <span className={`${selectedBaths === String(baths) ? 'text-primary font-medium' : 'text-stone-600 group-hover:text-stone-900'}`}>
                       {baths === 'All' ? 'Any' : `${baths} Bath${baths !== '1' ? 's' : ''}`}
@@ -284,7 +290,7 @@ const SingleWide: React.FC = () => {
             {/* Manufacturer Filter */}
             <div className="mb-8">
               <h3 className="font-semibold text-stone-900 mb-4 text-lg">Manufacturer</h3>
-              <div className="space-y-3">
+              <div className="space-y-3" role="radiogroup" aria-label="Filter by manufacturer">
                 {manufacturers.map(m => (
                   <label key={m} className="flex items-center gap-3 cursor-pointer group">
                     <input 
@@ -293,6 +299,7 @@ const SingleWide: React.FC = () => {
                       checked={selectedManuf === m}
                       onChange={() => setSelectedManuf(m)}
                       className="text-primary focus:ring-primary h-5 w-5 border-stone-300"
+                      aria-label={`Filter by ${m === 'All' ? 'all brands' : m} manufacturer`}
                     />
                     <span className={`${selectedManuf === m ? 'text-primary font-medium' : 'text-stone-600 group-hover:text-stone-900'}`}>
                       {m === 'All' ? 'All Brands' : m}
@@ -305,7 +312,7 @@ const SingleWide: React.FC = () => {
             {/* Size Range Filter */}
             <div>
               <h3 className="font-semibold text-stone-900 mb-4 text-lg">Square Footage</h3>
-              <div className="space-y-3">
+              <div className="space-y-3" role="radiogroup" aria-label="Filter by square footage">
                 {sizeRanges.map(range => (
                   <label key={range.value} className="flex items-center gap-3 cursor-pointer group">
                     <input 
@@ -314,6 +321,7 @@ const SingleWide: React.FC = () => {
                       checked={selectedSizeRange === range.value}
                       onChange={() => setSelectedSizeRange(range.value)}
                       className="text-primary focus:ring-primary h-5 w-5 border-stone-300"
+                      aria-label={`Filter by square footage: ${range.label.toLowerCase()}`}
                     />
                     <span className={`${selectedSizeRange === range.value ? 'text-primary font-medium' : 'text-stone-600 group-hover:text-stone-900'}`}>
                       {range.label}
@@ -329,6 +337,7 @@ const SingleWide: React.FC = () => {
             <button 
               onClick={() => setShowFilters(false)}
               className="w-full py-3 bg-primary text-white font-medium rounded-lg hover:bg-emerald-700 transition-colors"
+              aria-label={`View ${filteredHomes.length} filtered homes`}
             >
               View {filteredHomes.length} Homes
             </button>
@@ -336,6 +345,7 @@ const SingleWide: React.FC = () => {
               <button 
                 onClick={clearFilters}
                 className="w-full py-3 text-stone-600 font-medium hover:text-stone-900 transition-colors"
+                aria-label="Clear all filters"
               >
                 Clear All Filters
               </button>

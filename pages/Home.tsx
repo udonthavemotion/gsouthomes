@@ -37,7 +37,7 @@ const Home: React.FC = () => {
     <div className="flex flex-col min-h-screen overflow-hidden">
       
       {/* Hero Section - Cinematic */}
-      <section ref={heroRef} className="relative min-h-[100vh] flex items-center justify-center bg-stone-900 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-[100svh] sm:min-h-[100vh] flex items-center justify-center bg-stone-900 overflow-hidden">
         {/* Background Video */}
         <div className="absolute inset-0 z-0">
           <video 
@@ -45,6 +45,7 @@ const Home: React.FC = () => {
             muted 
             loop 
             playsInline
+            preload="metadata"
             className="w-full h-full object-cover"
           >
             <source src="/assets/video/catalog-hero.mp4" type="video/mp4" />
@@ -54,21 +55,8 @@ const Home: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-stone-900/50 via-transparent to-stone-900/50"></div>
         </div>
 
-        {/* Floating decorative elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-[100px] animate-float"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] animate-float" style={{ animationDelay: '2s' }}></div>
-
         <div className="relative z-10 container px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center">
-            {/* Badge */}
-            <div 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white/90 text-sm font-medium mb-8 animate-fade-in"
-              style={{ animationDelay: '200ms' }}
-            >
-              <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-              Louisiana's Trusted Home Dealer Since {COMPANY_INFO.founded}
-            </div>
-
             {/* Main Headline */}
             <h1 
               className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.95] tracking-tight mb-6 animate-fade-in-up"
@@ -94,11 +82,11 @@ const Home: React.FC = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up"
               style={{ animationDelay: '700ms' }}
             >
-              <Button variant="primary" to="/catalog" size="lg" className="shadow-glow">
+              <Button variant="primary" to="/catalog" size="lg">
                 Explore Our Homes
                 <ArrowRight size={20} className="ml-2" />
               </Button>
-              <Button variant="outline" to="/contact" size="lg" className="border-white/30 text-white hover:bg-white/10 hover:border-white/50">
+              <Button variant="outline" to="/contact" size="lg" className="border-white text-white hover:bg-white hover:text-primary">
                 Schedule a Visit
               </Button>
             </div>
@@ -123,13 +111,6 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center pt-2">
-            <div className="w-1.5 h-2.5 bg-white/60 rounded-full animate-pulse"></div>
-          </div>
-        </div>
       </section>
 
       {/* Why Choose Us - Modern Grid */}
@@ -139,7 +120,7 @@ const Home: React.FC = () => {
         
         <div className="container relative">
           <div className="text-center mb-16 scroll-animate">
-            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-md mb-4">
               Why Gulf South Homes
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-stone-900 mb-4">
@@ -152,19 +133,19 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[
-              { icon: <Award size={28} />, title: "Family Owned", desc: "Local values & personal service since 1995", color: "from-emerald-500 to-teal-600" },
-              { icon: <Truck size={28} />, title: "Delivery & Setup", desc: "Professional installation included with every home", color: "from-blue-500 to-indigo-600" },
-              { icon: <DollarSign size={28} />, title: "Easy Financing", desc: "FHA, VA, USDA & conventional loans available", color: "from-amber-500 to-orange-600" },
-              { icon: <Wrench size={28} />, title: "Parts & Service", desc: "In-house support team for ongoing care", color: "from-rose-500 to-pink-600" },
-              { icon: <Map size={28} />, title: "Land & Home", desc: "Turnkey packages with land included", color: "from-violet-500 to-purple-600" },
-              { icon: <ShieldCheck size={28} />, title: "Top Brands", desc: "Champion, Sunshine, Franklin & more", color: "from-cyan-500 to-blue-600" },
+              { icon: <Award size={28} />, title: "Family Owned", desc: "Local values & personal service since 1995", color: "bg-primary" },
+              { icon: <Truck size={28} />, title: "Delivery & Setup", desc: "Professional installation included with every home", color: "bg-blue-600" },
+              { icon: <DollarSign size={28} />, title: "Easy Financing", desc: "FHA, VA, USDA & conventional loans available", color: "bg-amber-600" },
+              { icon: <Wrench size={28} />, title: "Parts & Service", desc: "In-house support team for ongoing care", color: "bg-rose-600" },
+              { icon: <Map size={28} />, title: "Land & Home", desc: "Turnkey packages with land included", color: "bg-violet-600" },
+              { icon: <ShieldCheck size={28} />, title: "Top Brands", desc: "Champion, Sunshine, Franklin & more", color: "bg-cyan-600" },
             ].map((feature, idx) => (
-              <div 
-                key={idx} 
-                className="scroll-animate group p-6 lg:p-8 bg-white rounded-2xl border border-stone-100 hover:border-stone-200 hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+              <div
+                key={idx}
+                className="scroll-animate group p-6 lg:p-8 bg-white rounded-lg border border-stone-100 hover:border-stone-200 hover:shadow-md transition-all duration-500 hover:-translate-y-1"
                 style={{ transitionDelay: `${idx * 50}ms` }}
               >
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-white mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-14 h-14 rounded-lg ${feature.color} flex items-center justify-center text-white mb-5 group-hover:scale-110 transition-transform duration-300`}>
                   {feature.icon}
                 </div>
                 <h3 className="font-display font-bold text-stone-900 text-xl mb-2">{feature.title}</h3>
@@ -180,7 +161,7 @@ const Home: React.FC = () => {
         <div className="container">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-6 scroll-animate">
             <div>
-              <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">
+              <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-md mb-4">
                 Featured Models
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-stone-900 mb-3">
@@ -190,13 +171,22 @@ const Home: React.FC = () => {
                 Explore our most-loved home designs, handpicked for Louisiana families.
               </p>
             </div>
-            <Link 
-              to="/catalog" 
-              className="hidden lg:inline-flex items-center gap-2 px-6 py-3 bg-stone-900 text-white rounded-xl font-semibold hover:bg-primary transition-colors group"
-            >
-              View All Homes
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <div className="hidden lg:flex items-center gap-3">
+              <Link
+                to="/catalog"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 text-white rounded-md font-semibold hover:bg-primary transition-colors group"
+              >
+                View All Homes
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                to="/double-wide"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-stone-300 text-stone-700 rounded-md font-semibold hover:border-primary hover:text-primary transition-colors group"
+              >
+                Explore Double-Wide Homes
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -207,9 +197,13 @@ const Home: React.FC = () => {
             ))}
           </div>
           
-          <div className="mt-10 lg:hidden scroll-animate">
+          <div className="mt-10 lg:hidden scroll-animate space-y-3">
             <Button to="/catalog" fullWidth size="lg">
               View All Homes
+              <ArrowRight size={18} className="ml-2" />
+            </Button>
+            <Button to="/double-wide" fullWidth size="lg" variant="outline" className="border-stone-300">
+              Explore Double-Wide Homes
               <ArrowRight size={18} className="ml-2" />
             </Button>
           </div>
@@ -218,15 +212,9 @@ const Home: React.FC = () => {
 
       {/* Testimonials - Premium Design */}
       <section className="py-20 sm:py-28 bg-stone-900 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[150px]"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-[150px]"></div>
-        </div>
-
         <div className="container relative z-10">
           <div className="text-center mb-16 scroll-animate">
-            <span className="inline-block px-4 py-1.5 bg-white/10 text-white/80 text-sm font-semibold rounded-full mb-4">
+            <span className="inline-block px-4 py-1.5 bg-stone-800 text-white text-sm font-semibold rounded-md mb-4">
               Customer Stories
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white mb-4">
@@ -239,9 +227,9 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {TESTIMONIALS.map((t, i) => (
-              <div 
-                key={i} 
-                className="scroll-animate bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-500"
+              <div
+                key={i}
+                className="scroll-animate bg-stone-800 p-8 rounded-lg border border-stone-700 hover:bg-stone-750 transition-all duration-500"
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
                 {/* Stars */}
@@ -258,7 +246,7 @@ const Home: React.FC = () => {
                 
                 {/* Author */}
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-emerald-400 flex items-center justify-center text-white font-bold text-lg">
+                  <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg">
                     {t.name.charAt(0)}
                   </div>
                   <div>
@@ -276,11 +264,6 @@ const Home: React.FC = () => {
       <section className="relative py-24 sm:py-32 overflow-hidden">
         {/* Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-emerald-700 to-teal-800"></div>
-        {/* Decorative overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-[150px]"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white rounded-full blur-[150px]"></div>
-        </div>
 
         <div className="container relative z-10">
           <div className="max-w-4xl mx-auto text-center scroll-animate">
@@ -296,18 +279,18 @@ const Home: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
                 href={`tel:${COMPANY_INFO.phone}`}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary rounded-xl font-bold text-lg shadow-2xl hover:shadow-3xl hover:-translate-y-1 transition-all duration-300"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary rounded-md font-bold text-lg shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
-                <span className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <Play size={18} className="text-primary ml-0.5" />
                 </span>
                 Call {COMPANY_INFO.phone}
               </a>
-              <Button 
-                variant="outline" 
-                to="/contact" 
+              <Button
+                variant="outline"
+                to="/contact"
                 size="lg"
-                className="border-white/40 text-white hover:bg-white/10 hover:border-white"
+                className="border-white text-white hover:bg-white hover:text-primary"
               >
                 Get Directions
                 <ChevronRight size={18} className="ml-1" />

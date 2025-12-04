@@ -18,7 +18,11 @@ const HomeCard: React.FC<HomeCardProps> = ({ home }) => {
         <div className="relative aspect-[4/3] overflow-hidden">
           <img 
             src={home.imageUrl} 
-            alt={home.name} 
+            alt={home.name}
+            width={800}
+            height={600}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
           
@@ -27,12 +31,12 @@ const HomeCard: React.FC<HomeCardProps> = ({ home }) => {
           
           {/* Featured Badge */}
           {home.isFeatured && (
-            <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-gradient-to-r from-primary to-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+            <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-md shadow-md">
               <Sparkles size={12} />
               Featured
             </div>
           )}
-          
+
           {/* Gallery Button */}
           {home.gallery && home.gallery.length > 0 && (
             <button
@@ -41,18 +45,18 @@ const HomeCard: React.FC<HomeCardProps> = ({ home }) => {
                 e.stopPropagation();
                 setGalleryOpen(true);
               }}
-              className="absolute top-4 right-4 flex items-center gap-1.5 bg-white/95 backdrop-blur-sm text-stone-900 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-white hover:scale-105"
+              className="absolute top-4 right-4 flex items-center gap-1.5 bg-white text-stone-900 px-3 py-1.5 rounded-md text-xs font-bold shadow-md transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-stone-50"
             >
               <Images size={14} />
               {home.gallery.length} Photos
             </button>
           )}
-          
+
           {/* Bottom Info Overlay */}
           <div className="absolute bottom-0 inset-x-0 p-5">
             <div className="flex items-end justify-between">
               <div>
-                <span className="inline-block px-2.5 py-1 bg-white/20 backdrop-blur-md text-white/90 text-xs font-medium rounded-lg mb-2">
+                <span className="inline-block px-2.5 py-1 bg-stone-900 text-white text-xs font-medium rounded-md mb-2">
                   {home.manufacturer}
                 </span>
                 <h3 className="text-xl font-bold text-white font-display leading-tight">
@@ -67,7 +71,7 @@ const HomeCard: React.FC<HomeCardProps> = ({ home }) => {
         {/* Card Body */}
         <div className="p-5">
           {/* Stats Row */}
-          <div className="flex justify-between items-center py-4 px-2 bg-stone-50 rounded-xl mb-4">
+          <div className="flex justify-between items-center py-4 px-2 bg-stone-50 rounded-lg mb-4">
             <div className="flex flex-col items-center flex-1">
               <div className="flex items-center gap-1.5 text-primary mb-0.5">
                 <Bed size={16} />
@@ -99,9 +103,9 @@ const HomeCard: React.FC<HomeCardProps> = ({ home }) => {
           </p>
 
           {/* CTA Button */}
-          <Link 
-            to={`/catalog/${home.id}`}
-            className="flex items-center justify-center gap-2 w-full py-3 bg-stone-900 text-white rounded-xl text-sm font-semibold transition-all duration-300 hover:bg-primary hover:shadow-lg hover:shadow-primary/25 group/btn"
+          <Link
+            to={home.type === 'Double Wide' ? `/double-wide/${home.id}` : `/catalog/${home.id}`}
+            className="flex items-center justify-center gap-2 w-full py-3 bg-stone-900 text-white rounded-md text-sm font-semibold transition-all duration-300 hover:bg-primary group/btn"
           >
             View Details 
             <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1" />

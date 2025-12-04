@@ -30,7 +30,15 @@ const HomeDetails: React.FC = () => {
 
       {/* Hero Image Area */}
       <div className="h-64 md:h-96 w-full overflow-hidden relative bg-stone-900">
-        <img src={home.imageUrl} alt={home.name} className="w-full h-full object-cover opacity-90" />
+        <img 
+          src={home.imageUrl} 
+          alt={home.name}
+          width={1200}
+          height={600}
+          loading="eager"
+          decoding="async"
+          className="w-full h-full object-cover opacity-90" 
+        />
         <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6 md:p-12">
             <div className="container mx-auto">
                 <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-2 inline-block">

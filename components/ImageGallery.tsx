@@ -46,19 +46,19 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
       {/* Close Button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-50 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+        className="absolute top-4 right-4 z-50 p-2 bg-stone-900 hover:bg-stone-800 rounded-md transition-colors"
         aria-label="Close gallery"
       >
         <X size={28} className="text-white" />
       </button>
 
       {/* Image Counter */}
-      <div className="absolute top-4 left-4 z-50 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white font-medium">
+      <div className="absolute top-4 left-4 z-50 px-4 py-2 bg-stone-900 rounded-md text-white font-medium">
         {currentIndex + 1} / {images.length}
       </div>
 
       {/* Model Name */}
-      <div className="absolute top-16 left-4 z-50 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white font-semibold">
+      <div className="absolute top-16 left-4 z-50 px-4 py-2 bg-stone-900 rounded-md text-white font-semibold">
         {homeModel}
       </div>
 
@@ -70,7 +70,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
               e.stopPropagation();
               goToPrevious();
             }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 bg-white/20 hover:bg-white/30 rounded-full transition-colors"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 bg-stone-900 hover:bg-stone-800 rounded-md transition-colors"
             aria-label="Previous image"
           >
             <ChevronLeft size={32} className="text-white" />
@@ -81,7 +81,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
               e.stopPropagation();
               goToNext();
             }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 bg-white/20 hover:bg-white/30 rounded-full transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 bg-stone-900 hover:bg-stone-800 rounded-md transition-colors"
             aria-label="Next image"
           >
             <ChevronRight size={32} className="text-white" />
@@ -97,6 +97,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
         <img
           src={images[currentIndex]}
           alt={`${homeModel} - Image ${currentIndex + 1}`}
+          loading="eager"
+          decoding="async"
           className="w-full h-full object-contain max-h-[85vh] rounded-lg"
         />
       </div>
@@ -104,7 +106,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
       {/* Thumbnail Strip */}
       {images.length > 1 && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-4xl w-full px-4">
-          <div className="flex gap-2 overflow-x-auto py-2 px-2 bg-white/10 backdrop-blur-sm rounded-lg">
+          <div className="flex gap-2 overflow-x-auto py-2 px-2 bg-stone-900 rounded-lg">
             {images.map((img, idx) => (
               <button
                 key={idx}
@@ -121,6 +123,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                 <img
                   src={img}
                   alt={`Thumbnail ${idx + 1}`}
+                  width={80}
+                  height={56}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </button>

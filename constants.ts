@@ -19,7 +19,7 @@ export const COMPANY_INFO = {
     owner: "Stephanie Duplantis",
     generalManager: "Tim Duplantis"
   },
-  certifications: ["BBB Accredited", "LHMA Member", "Women-Owned Business"]
+  certifications: ["BBB Accredited", "LHMA Member"]
 };
 
 // Export real home data

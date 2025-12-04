@@ -59,6 +59,7 @@ const Footer: React.FC = () => {
               {[
                 { name: 'Our Homes', path: '/catalog' },
                 { name: 'Single-Wide', path: '/single-wide' },
+                { name: 'Double-Wide', path: '/double-wide' },
                 { name: 'Land & Home', path: '/land-home' },
                 { name: 'About Us', path: '/about' },
               ].map((link) => (
@@ -151,8 +152,6 @@ const Footer: React.FC = () => {
             <span>BBB Accredited</span>
             <span>•</span>
             <span>LHMA Member</span>
-            <span>•</span>
-            <span>Women-Owned Business</span>
           </div>
         </div>
       </div>
