@@ -1,0 +1,49 @@
+import React, { useEffect } from 'react';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Catalog from './pages/Catalog';
+import HomeDetails from './pages/HomeDetails';
+import About from './pages/About';
+import Services from './pages/Services';
+import Contact from './pages/Contact';
+import SingleWide from './pages/SingleWide';
+import LandHome from './pages/LandHome';
+
+// Scroll to top helper
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <ScrollToTop />
+      <div className="flex flex-col min-h-screen font-sans text-stone-800 bg-stone-50">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/catalog/:id" element={<HomeDetails />} />
+            <Route path="/single-wide" element={<SingleWide />} />
+            <Route path="/about" element={<About />} />
+            {/* Combine Services, Parts, Financing into one route wrapper or specific routes */}
+            <Route path="/services" element={<Services />} />
+            <Route path="/financing" element={<Services />} />
+            <Route path="/land-home" element={<LandHome />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+  );
+};
+
+export default App;
