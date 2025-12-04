@@ -135,20 +135,56 @@ const Navbar: React.FC = () => {
           {/* Desktop Links */}
           <div className="hidden lg:flex items-center space-x-1">
             {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg ${
-                  isActive(link.path) 
-                    ? 'text-primary' 
-                    : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
-                }`}
-              >
-                {link.name}
-                {isActive(link.path) && (
-                  <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary"></span>
-                )}
-              </Link>
+              link.sublinks ? (
+                // Dropdown for links with sublinks
+                <div key={link.path} className="relative group">
+                  <Link
+                    to={link.path}
+                    className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg flex items-center gap-1 ${
+                      isActive(link.path)
+                        ? 'text-primary'
+                        : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                    }`}
+                  >
+                    {link.name}
+                    <ChevronRight size={14} className="transform -rotate-90 transition-transform group-hover:rotate-0" />
+                    {isActive(link.path) && (
+                      <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary"></span>
+                    )}
+                  </Link>
+
+                  {/* Dropdown Menu */}
+                  <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-lg shadow-xl border border-stone-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="py-2">
+                      {link.sublinks.map((sublink) => (
+                        <Link
+                          key={sublink.path}
+                          to={sublink.path}
+                          className="block px-4 py-3 text-sm font-medium text-stone-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                        >
+                          {sublink.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // Regular link without dropdown
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg ${
+                    isActive(link.path)
+                      ? 'text-primary'
+                      : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                  }`}
+                >
+                  {link.name}
+                  {isActive(link.path) && (
+                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary"></span>
+                  )}
+                </Link>
+              )
             ))}
           </div>
 
@@ -223,22 +259,39 @@ const Navbar: React.FC = () => {
           <h2 id="mobile-menu-title" className="sr-only">Navigation Menu</h2>
           <div className="space-y-1">
             {navLinks.map((link, idx) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={closeMenu}
-                className={`mobile-menu-item flex items-center justify-between px-4 py-3.5 rounded-lg text-base font-semibold transition-all duration-300 min-h-[44px] ${
-                  isActive(link.path)
-                    ? 'text-primary bg-primary/10'
-                    : 'text-stone-700 hover:bg-stone-100 active:bg-stone-200'
-                } ${isOpen ? 'animate-fade-in-up' : ''}`}
-                style={{ 
-                  animationDelay: `${idx * 50}ms`
-                }}
-              >
-                {link.name}
-                <ChevronRight size={18} className={isActive(link.path) ? 'text-primary' : 'text-stone-400'} aria-hidden="true" />
-              </Link>
+              <div key={link.path}>
+                <Link
+                  to={link.path}
+                  onClick={closeMenu}
+                  className={`mobile-menu-item flex items-center justify-between px-4 py-3.5 rounded-lg text-base font-semibold transition-all duration-300 min-h-[44px] ${
+                    isActive(link.path)
+                      ? 'text-primary bg-primary/10'
+                      : 'text-stone-700 hover:bg-stone-100 active:bg-stone-200'
+                  } ${isOpen ? 'animate-fade-in-up' : ''}`}
+                  style={{
+                    animationDelay: `${idx * 50}ms`
+                  }}
+                >
+                  {link.name}
+                  <ChevronRight size={18} className={isActive(link.path) ? 'text-primary' : 'text-stone-400'} aria-hidden="true" />
+                </Link>
+
+                {/* Mobile Sublinks */}
+                {link.sublinks && (
+                  <div className="ml-4 mt-1 space-y-1">
+                    {link.sublinks.map((sublink) => (
+                      <Link
+                        key={sublink.path}
+                        to={sublink.path}
+                        onClick={closeMenu}
+                        className="block px-4 py-2.5 rounded-lg text-sm font-medium text-stone-600 hover:bg-stone-100 hover:text-primary transition-all duration-200 min-h-[44px]"
+                      >
+                        {sublink.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
             
             <Link
