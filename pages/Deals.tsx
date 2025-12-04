@@ -1,9 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { DollarSign, Truck, ShieldCheck, Gift, MapPin, Phone, Award } from 'lucide-react';
 import Button from '../components/Button';
 import { COMPANY_INFO } from '../constants';
 
 const Deals: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Ensure video plays on mount and when ready
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      const playVideo = () => {
+        video.play().catch((err) => {
+          console.warn('Video autoplay prevented, will retry:', err);
+        });
+      };
+
+      // Try to play immediately
+      playVideo();
+
+      // Also try when video is ready
+      video.addEventListener('loadeddata', playVideo);
+      video.addEventListener('canplay', playVideo);
+      video.addEventListener('canplaythrough', playVideo);
+
+      return () => {
+        video.removeEventListener('loadeddata', playVideo);
+        video.removeEventListener('canplay', playVideo);
+        video.removeEventListener('canplaythrough', playVideo);
+      };
+    }
+  }, []);
+
   // Intersection Observer for scroll animations
   useEffect(() => {
     const observerOptions = {
@@ -31,10 +59,39 @@ const Deals: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-primary via-emerald-700 to-teal-800 overflow-hidden pt-[calc(80px+env(safe-area-inset-top))] sm:pt-[calc(96px+env(safe-area-inset-top))] pb-12">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px]"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-[120px]"></div>
+      <section className="relative min-h-[calc(100svh-80px)] md:min-h-[calc(100vh-96px)] flex items-center justify-center bg-stone-900 overflow-hidden pt-[calc(80px+env(safe-area-inset-top))] sm:pt-[calc(96px+env(safe-area-inset-top))] pb-12">
+        <div className="absolute inset-0 z-0">
+          <video 
+            ref={videoRef}
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover"
+            aria-label="Deals page hero video"
+            onLoadedData={() => {
+              // Ensure video plays after loading
+              if (videoRef.current) {
+                videoRef.current.play().catch((err) => {
+                  console.warn('Video autoplay prevented:', err);
+                });
+              }
+            }}
+            onCanPlay={() => {
+              // Ensure video plays when ready
+              if (videoRef.current) {
+                videoRef.current.play().catch((err) => {
+                  console.warn('Video autoplay prevented:', err);
+                });
+              }
+            }}
+          >
+            <source src="/deals header.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          {/* Overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-900/80 via-stone-900/50 to-stone-900/90"></div>
         </div>
 
         <div className="relative z-10 container px-4 sm:px-6 lg:px-8">

@@ -243,7 +243,7 @@ const About: React.FC = () => {
               }
             }}
           >
-            <source src="/about-hero.mp4" type="video/mp4" />
+            <source src="/about page.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           {/* Overlay for text readability */}
