@@ -149,7 +149,7 @@ const Home: React.FC = () => {
             </Link>
 
             <Link
-              to="/catalog"
+              to="/manufacturers"
               className="group p-8 bg-gradient-to-br from-violet-50 to-violet-100 hover:from-violet-100 hover:to-violet-200 rounded-2xl border-2 border-violet-200 hover:border-violet-300 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
             >
               <Award size={40} className="text-violet-600 mb-4 group-hover:scale-110 transition-transform" />

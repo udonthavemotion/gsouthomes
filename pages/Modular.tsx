@@ -1,36 +1,28 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { DOUBLE_WIDE_HOMES } from '../data/double-wide-homes';
+import { MODULAR_HOMES } from '../data/modular-homes';
 import HomeCard from '../components/HomeCard';
-import { SlidersHorizontal, X, ArrowRight } from 'lucide-react';
+import Button from '../components/Button';
+import { COMPANY_INFO } from '../constants';
+import { SlidersHorizontal, X, ArrowRight, MapPin, Phone, Clock } from 'lucide-react';
 
-const DoubleWide: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const manufacturerParam = searchParams.get('manufacturer');
-
-  const [selectedManufacturer, setSelectedManufacturer] = useState<string>(manufacturerParam || 'All');
+const Modular: React.FC = () => {
+  const [selectedManufacturer, setSelectedManufacturer] = useState<string>('All');
   const [selectedBeds, setSelectedBeds] = useState<string>('All');
   const [selectedBaths, setSelectedBaths] = useState<string>('All');
   const [selectedSqft, setSelectedSqft] = useState<string>('All');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Update manufacturer filter when URL param changes
-  useEffect(() => {
-    if (manufacturerParam) {
-      setSelectedManufacturer(manufacturerParam);
-    }
-  }, [manufacturerParam]);
-
   // Extract unique values for filters
-  const manufacturers = ['All', ...Array.from(new Set(DOUBLE_WIDE_HOMES.map(h => h.manufacturer)))];
-  const bedOptions = ['All', '3', '4', '5'];
+  const manufacturers = ['All', ...Array.from(new Set(MODULAR_HOMES.map(h => h.manufacturer === 'BG' ? 'BG Manufacturing' : h.manufacturer)))];
+  const bedOptions = ['All', '2', '3', '4'];
   const bathOptions = ['All', '2', '2.5', '3'];
-  const sqftOptions = ['All', 'Under 1,500', '1,500-2,000', 'Over 2,000'];
+  const sqftOptions = ['All', 'Under 1,500', '1,500-2,000', '2,000-2,500', 'Over 2,500'];
 
   // Filter homes based on selections
   const filteredHomes = useMemo(() => {
-    return DOUBLE_WIDE_HOMES.filter(home => {
-      const matchManuf = selectedManufacturer === 'All' || home.manufacturer === selectedManufacturer;
+    return MODULAR_HOMES.filter(home => {
+      const displayManuf = home.manufacturer === 'BG' ? 'BG Manufacturing' : home.manufacturer;
+      const matchManuf = selectedManufacturer === 'All' || displayManuf === selectedManufacturer;
       const matchBeds = selectedBeds === 'All' || home.beds === parseInt(selectedBeds);
       const matchBaths = selectedBaths === 'All' || home.baths === parseFloat(selectedBaths);
 
@@ -39,8 +31,10 @@ const DoubleWide: React.FC = () => {
         matchSqft = home.sqft < 1500;
       } else if (selectedSqft === '1,500-2,000') {
         matchSqft = home.sqft >= 1500 && home.sqft <= 2000;
-      } else if (selectedSqft === 'Over 2,000') {
-        matchSqft = home.sqft > 2000;
+      } else if (selectedSqft === '2,000-2,500') {
+        matchSqft = home.sqft >= 2000 && home.sqft <= 2500;
+      } else if (selectedSqft === 'Over 2,500') {
+        matchSqft = home.sqft > 2500;
       }
 
       return matchManuf && matchBeds && matchBaths && matchSqft;
@@ -96,22 +90,16 @@ const DoubleWide: React.FC = () => {
 
   return (
     <div className="bg-stone-50 min-h-screen">
-      {/* Hero Section - Cinematic */}
+      {/* Hero Section */}
       <section className="relative min-h-[calc(85svh-80px)] md:min-h-[calc(85vh-96px)] flex items-center justify-center bg-stone-900 overflow-hidden pt-[calc(80px+env(safe-area-inset-top))] md:pt-[calc(96px+env(safe-area-inset-top))] pb-12">
-        {/* Background Video */}
+        {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="w-full h-full object-cover opacity-50"
-          >
-            <source src="/assets/video/catalog-hero.mp4" type="video/mp4" />
-          </video>
-          {/* Multi-layer gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-stone-900/40 via-stone-900/20 to-stone-900/90"></div>
+          <img
+            src="/Modular Homes Page/modular home pics/gulf-south-homes-modular-homes-content-01-1920w.jpg"
+            alt="Modular Homes"
+            className="w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-900/60 via-stone-900/40 to-stone-900/90"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-stone-900/50 via-transparent to-stone-900/50"></div>
         </div>
 
@@ -126,8 +114,8 @@ const DoubleWide: React.FC = () => {
               className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.95] tracking-tight mb-6 animate-fade-in-up"
               style={{ animationDelay: '300ms' }}
             >
-              <span className="block">Spacious.</span>
-              <span className="block mt-2">Customizable.</span>
+              <span className="block">Modular Homes.</span>
+              <span className="block mt-2">Fully Customizable.</span>
               <span className="block mt-2 bg-gradient-to-r from-emerald-300 via-primary to-emerald-400 bg-clip-text text-transparent">
                 Built to Last.
               </span>
@@ -138,7 +126,7 @@ const DoubleWide: React.FC = () => {
               className="text-lg sm:text-xl md:text-2xl text-stone-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed animate-fade-in-up"
               style={{ animationDelay: '500ms' }}
             >
-              Browse our full line of modern double-wide homes  designed for comfort, style, and long-term value.
+              Complete flexibility and customization. Any floor plan can be built as a modular home and tailored to your exact preferences.
             </p>
 
             {/* CTA Button */}
@@ -158,6 +146,23 @@ const DoubleWide: React.FC = () => {
         </div>
       </section>
 
+      {/* About Modular Homes Section */}
+      <section className="py-20 sm:py-28 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center scroll-animate">
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-md mb-4">
+              About Modular Homes
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-stone-900 mb-6">
+              Complete Flexibility & Customization
+            </h2>
+            <p className="text-stone-600 text-lg leading-relaxed mb-8">
+              Our modular homes offer complete flexibility and customization. Any floor plan you see on our lot can be built as a modular home and tailored to your exact preferences. From structural layout and room configuration to interior finishes, cabinetry, flooring, exterior options, and energy-efficient features, every modular home can be designed to reflect your style and meet your needs. Modular homes provide the strength and quality of site-built homes with a faster build time and more value, making them a smart choice for today's homeowners.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Homes Grid Section */}
       <div id="homes-grid" className="container mx-auto py-12 px-4 sm:px-6 lg:px-8 scroll-animate">
         {/* Header with Filters Button */}
@@ -167,7 +172,7 @@ const DoubleWide: React.FC = () => {
               Available Models
             </h2>
             <p className="text-stone-600 text-lg">
-              Browsing <span className="font-semibold text-primary">{filteredHomes.length}</span> double-wide homes
+              Browsing <span className="font-semibold text-primary">{filteredHomes.length}</span> modular homes
             </p>
           </div>
 
@@ -267,6 +272,51 @@ const DoubleWide: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Contact CTA Section */}
+      <section className="py-20 sm:py-28 bg-stone-900 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12 scroll-animate">
+              <span className="inline-block px-4 py-1.5 bg-white/10 text-white text-sm font-semibold rounded-md mb-4">
+                Visit Us
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-4">
+                Proudly Serving Southeast Louisiana
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-10">
+              <div className="scroll-animate text-center">
+                <MapPin className="text-primary mx-auto mb-4" size={32} />
+                <h3 className="font-bold text-lg mb-2">Address</h3>
+                <p className="text-stone-300">{COMPANY_INFO.address}</p>
+              </div>
+              <div className="scroll-animate text-center">
+                <Phone className="text-primary mx-auto mb-4" size={32} />
+                <h3 className="font-bold text-lg mb-2">Phone</h3>
+                <a href={`tel:${COMPANY_INFO.phone}`} className="text-stone-300 hover:text-primary transition-colors">
+                  {COMPANY_INFO.phone}
+                </a>
+              </div>
+              <div className="scroll-animate text-center">
+                <Clock className="text-primary mx-auto mb-4" size={32} />
+                <h3 className="font-bold text-lg mb-2">Business Hours</h3>
+                <p className="text-stone-300">{COMPANY_INFO.hours.weekdays}</p>
+                <p className="text-stone-300">{COMPANY_INFO.hours.saturday}</p>
+                <p className="text-stone-300">{COMPANY_INFO.hours.sunday}</p>
+              </div>
+            </div>
+
+            <div className="text-center scroll-animate">
+              <Button to="/contact" variant="white" size="lg">
+                Contact Us
+                <ArrowRight size={18} className="ml-2" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Filter Drawer - Backdrop */}
       <div
@@ -411,4 +461,4 @@ const DoubleWide: React.FC = () => {
   );
 };
 
-export default DoubleWide;
+export default Modular;

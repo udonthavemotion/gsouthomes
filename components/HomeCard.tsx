@@ -57,7 +57,7 @@ const HomeCard: React.FC<HomeCardProps> = ({ home }) => {
             <div className="flex items-end justify-between">
               <div>
                 <span className="inline-block px-2.5 py-1 bg-stone-900 text-white text-xs font-medium rounded-md mb-2">
-                  {home.manufacturer}
+                  {home.manufacturer === 'BG' ? 'BG Manufacturing' : home.manufacturer}
                 </span>
                 <h3 className="text-xl font-bold text-white font-display leading-tight">
                   {home.name}
@@ -104,7 +104,13 @@ const HomeCard: React.FC<HomeCardProps> = ({ home }) => {
 
           {/* CTA Button */}
           <Link
-            to={home.type === 'Double Wide' ? `/double-wide/${home.id}` : `/catalog/${home.id}`}
+            to={
+              home.type === 'Double Wide' 
+                ? `/double-wide/${home.id}` 
+                : home.type === 'Modular'
+                ? `/modular-homes/${home.id}`
+                : `/catalog/${home.id}`
+            }
             className="flex items-center justify-center gap-2 w-full py-3 bg-stone-900 text-white rounded-md text-sm font-semibold transition-all duration-300 hover:bg-primary group/btn"
           >
             View Details 

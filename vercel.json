@@ -1,13 +1,13 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!.*\\.mp4$)(?!deals%20header\\.mp4$)(?!about%20page\\.mp4$).*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/assets/video/(.*)",
+      "source": "/:path*.mp4",
       "headers": [
         {
           "key": "Content-Type",
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "source": "/(.*\\.mp4)",
+      "source": "/assets/video/(.*)",
       "headers": [
         {
           "key": "Content-Type",

@@ -70,9 +70,9 @@ const Navbar: React.FC = () => {
     { name: 'Homes For Sale', path: '/catalog', sublinks: [
       { name: 'Single Wide Homes', path: '/single-wide' },
       { name: 'Double Wide Homes', path: '/double-wide' },
-      { name: 'Modular Homes', path: '/catalog?type=Modular' },
-      { name: 'View by Manufacturer', path: '/catalog' },
+      { name: 'Modular Homes', path: '/modular-homes' },
     ]},
+    { name: 'Manufacturers', path: '/manufacturers' },
     { name: 'Deals', path: '/deals' },
     { name: 'Financing', path: '/financing' },
     { name: 'Parts Store', path: '/parts' },
@@ -160,7 +160,11 @@ const Navbar: React.FC = () => {
                         <Link
                           key={sublink.path}
                           to={sublink.path}
-                          className="block px-4 py-3 text-sm font-medium text-stone-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                          className={`block px-4 py-3 text-sm font-medium transition-colors ${
+                            isActive(sublink.path)
+                              ? 'bg-primary/10 text-primary font-semibold'
+                              : 'text-stone-700 hover:bg-primary/5 hover:text-primary'
+                          }`}
                         >
                           {sublink.name}
                         </Link>
@@ -284,7 +288,11 @@ const Navbar: React.FC = () => {
                         key={sublink.path}
                         to={sublink.path}
                         onClick={closeMenu}
-                        className="block px-4 py-2.5 rounded-lg text-sm font-medium text-stone-600 hover:bg-stone-100 hover:text-primary transition-all duration-200 min-h-[44px]"
+                        className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-h-[44px] ${
+                          isActive(sublink.path)
+                            ? 'bg-primary/10 text-primary font-semibold'
+                            : 'text-stone-600 hover:bg-stone-100 hover:text-primary'
+                        }`}
                       >
                         {sublink.name}
                       </Link>

@@ -1,16 +1,27 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { HOMES } from '../data/homes';
 import { SlidersHorizontal, X, Phone, MapPin } from 'lucide-react';
 import Button from '../components/Button';
 import HomeCard from '../components/HomeCard';
 
 const SingleWide: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const manufacturerParam = searchParams.get('manufacturer');
+
   // Filter state
   const [selectedBeds, setSelectedBeds] = useState<string>('All');
   const [selectedBaths, setSelectedBaths] = useState<string>('All');
-  const [selectedManuf, setSelectedManuf] = useState<string>('All');
+  const [selectedManuf, setSelectedManuf] = useState<string>(manufacturerParam || 'All');
   const [selectedSizeRange, setSelectedSizeRange] = useState<string>('All');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Update manufacturer filter when URL param changes
+  useEffect(() => {
+    if (manufacturerParam) {
+      setSelectedManuf(manufacturerParam);
+    }
+  }, [manufacturerParam]);
 
   // Get only single-wide homes
   const singleWideHomes = HOMES.filter(h => h.type === 'Single Wide');
@@ -64,7 +75,7 @@ const SingleWide: React.FC = () => {
     <div className="bg-stone-50 min-h-screen">
 
       {/* Hero Section with Background Video */}
-      <section className="relative min-h-[calc(50svh-80px)] md:min-h-[calc(50vh-96px)] min-h-[400px] flex items-center justify-center bg-stone-900 overflow-hidden pt-[calc(80px+env(safe-area-inset-top))] md:pt-[calc(96px+env(safe-area-inset-top))] pb-12">
+      <section className="relative min-h-[400px] md:min-h-[calc(50vh-96px)] flex items-center justify-center bg-stone-900 overflow-hidden pt-[calc(80px+env(safe-area-inset-top))] md:pt-[calc(96px+env(safe-area-inset-top))] pb-12">
         {/* Background Video */}
         <div className="absolute inset-0 z-0">
           <video 
