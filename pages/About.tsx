@@ -199,7 +199,7 @@ const About: React.FC = () => {
             className="absolute inset-0 w-full h-full object-cover z-0"
             aria-label="About page hero video"
           >
-            <source src="/assets/images/Meet the team/about header.mp4" type="video/mp4" />
+            <source src="/about video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           {/* Overlay for text readability */}
