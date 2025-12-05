@@ -71,7 +71,7 @@ const Home: React.FC = () => {
           preload="metadata"
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/assets/video/mainhero.mp4" type="video/mp4" />
+          <source src="/assets/video/videosworking/herohome.mp4" type="video/mp4" />
         </video>
 
         {/* Background Overlay */}

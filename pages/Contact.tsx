@@ -6,10 +6,33 @@ import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 const Contact: React.FC = () => {
   return (
     <div className="bg-stone-50 min-h-screen">
-       <div className="bg-stone-900 text-white py-16 text-center">
-        <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-        <p className="text-stone-300">We are here to help you find your way home.</p>
-      </div>
+      {/* Hero Section - Universal Responsive Pattern */}
+      <section className="relative w-full min-h-[80vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 overflow-hidden bg-stone-900">
+        {/* Background Video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/assets/video/videosworking/land.mp4" type="video/mp4" />
+        </video>
+
+        {/* Background Overlay */}
+        <div className="absolute inset-0 bg-black/40"></div>
+
+        {/* Content */}
+        <div className="relative z-10 w-full max-w-4xl mx-auto">
+          <h1 className="font-bold text-white leading-tight text-4xl sm:text-5xl lg:text-6xl max-w-[900px] mx-auto break-words mb-6">
+            Contact Us
+          </h1>
+          <p className="text-white/90 text-base sm:text-lg lg:text-xl max-w-[700px] mx-auto mt-4">
+            We are here to help you find your way home.
+          </p>
+        </div>
+      </section>
 
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

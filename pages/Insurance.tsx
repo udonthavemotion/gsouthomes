@@ -41,7 +41,7 @@ const Insurance: React.FC = () => {
           preload="metadata"
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/assets/video/financingpage.mp4" type="video/mp4" />
+          <source src="/assets/video/videosworking/finance.mp4" type="video/mp4" />
         </video>
 
         {/* Background Overlay */}

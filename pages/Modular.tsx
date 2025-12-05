@@ -101,7 +101,7 @@ const Modular: React.FC = () => {
           preload="metadata"
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/assets/video/hero.mp4" type="video/mp4" />
+          <source src="/assets/video/videosworking/modularhomes.mp4" type="video/mp4" />
         </video>
 
         {/* Background Overlay */}

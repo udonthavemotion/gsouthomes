@@ -1,8 +1,9 @@
 {
-  "buildCommand": "git lfs pull && npm run build",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
   "rewrites": [
     {
-      "source": "/((?!.*\\.mp4$).*)",
+      "source": "/((?!.*\\.(mp4|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|ttf|eot|css|js)$).*)",
       "destination": "/index.html"
     }
   ],
