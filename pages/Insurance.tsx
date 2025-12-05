@@ -31,10 +31,22 @@ const Insurance: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-indigo-600 via-violet-700 to-purple-800 overflow-hidden pt-[calc(80px+env(safe-area-inset-top))] sm:pt-[calc(96px+env(safe-area-inset-top))] pb-12">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px]"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-500/20 rounded-full blur-[120px]"></div>
+      <section className="relative min-h-[50vh] flex items-center justify-center bg-stone-900 overflow-hidden pt-[calc(80px+env(safe-area-inset-top))] sm:pt-[calc(96px+env(safe-area-inset-top))] pb-12">
+        {/* Background Video */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover"
+          >
+            <source src="/assets/video/financingpage.mp4" type="video/mp4" />
+          </video>
+          {/* Multi-layer gradient overlay for depth */}
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-900/40 via-stone-900/20 to-stone-900/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-stone-900/50 via-transparent to-stone-900/50"></div>
         </div>
 
         <div className="relative z-10 container px-4 sm:px-6 lg:px-8">
@@ -46,7 +58,7 @@ const Insurance: React.FC = () => {
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight mb-6">
               In-House Insurance Agents
             </h1>
-            <p className="text-xl sm:text-2xl text-violet-100 mb-8">
+            <p className="text-xl sm:text-2xl text-white/90 mb-8">
               Comprehensive coverage for your manufactured home
             </p>
           </div>
