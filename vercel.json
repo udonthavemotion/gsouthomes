@@ -3,7 +3,7 @@
   "buildCommand": "npm run build",
   "rewrites": [
     {
-      "source": "/((?!.*\\.(mp4|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|ttf|eot|css|js)$).*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ],
